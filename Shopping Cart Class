@@ -1,0 +1,84 @@
+<?php
+//class shoppin Cart
+class ShoppingCart {	
+	
+	//Function to display the products for sale
+	public function displayProductsNicely1 (array $products) {
+		//Title
+		print "<h2>Products:</h2>";
+		//Looping through products array
+		foreach($products as $product){
+			//Printing products as a table	
+			//Name of products
+			//price of products
+			//link to add to cart
+			echo '
+			<table>
+			<tr>
+				<td>' . $product['name'] . '</td>
+				<td>$' .number_format( $product['price'],2) . '</td>
+				<td><a href="?action=add&name=' . $product['name'] .' $'.number_format($product['price'],2) .'">[+ Add to cart]</a></td>
+			</tr>
+			</table>';
+		}		
+	}
+	
+	//shows shopping cart
+	//makes a session array containing the name of each item chosen.
+	public function getItems() {
+		//title
+		echo "<h2>Shopping Cart</h2>";
+			
+		//Creates a new cart array if none exist
+		if (empty($_SESSION['items'])) {
+			$_SESSION['items'] = array();
+			}
+			
+		//Explains what you have just put in your cart
+		echo '<br>You have just put a '.$_GET['name'].' into your cart.<br>';
+		//Title of cart columns
+		echo "<p>Name and price</p>";
+		//Adds a new item to your cart each time you click the link "Add to cart"
+		array_push($_SESSION['items'], $_GET["name"]);
+		return $_SESSION['items'];
+	}
+	//My attempt to make the cart display properly - unfinished(but, I'm not going to finish it because I have to move house this weekend.)
+	public function formatCart() {
+		//loop through the cart array	
+		foreach($_SESSION['items'] as $value){
+			//print out each item
+			echo $value.'<br>';
+		}
+	}
+	
+}
+//end of class
+
+$products = array(
+	
+array('name' => 'Sledgehammer', 'price' => 125.75),
+
+array('name' => 'Axe', 'price' => 190.50),
+
+array('name' => 'Bandsaw', 'price' => 562.13),
+
+array('name' => 'Chisel', 'price' => 12.9),
+
+array('name' => 'Hacksaw', 'price' => 18.45)
+
+);
+//make a new instance of shopping cart from the class
+$shoppingCart = new ShoppingCart();
+
+session_start();
+
+echo $shoppingCart->displayProductsNicely1($products);
+
+$shoppingCart->getItems();
+echo '<br>';
+
+$shoppingCart->formatCart();
+
+
+
+?>
